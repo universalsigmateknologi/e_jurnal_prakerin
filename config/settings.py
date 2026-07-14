@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'master',
     'jurnal',
     'prakerin',
+    'penilaian',
 ]
 
 MIDDLEWARE = [
