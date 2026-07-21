@@ -37,12 +37,19 @@ class CustomUserAdmin(BaseUserAdmin):
     search_fields = ['username', 'nama_lengkap', 'email', 'no_hp']
     ordering = ['-created_at']
     
-    fieldsets = BaseUserAdmin.fieldsets + (
+    # Override total fieldsets untuk menghindari duplikasi 'is_active'
+    fieldsets = (
+        (None, {
+            'fields': ('username', 'password')
+        }),
         ('Informasi Pribadi', {
-            'fields': ('nama_lengkap', 'no_hp', 'foto_profil')
+            'fields': ('nama_lengkap', 'email', 'no_hp', 'foto_profil')
         }),
         ('Role & Akses', {
-            'fields': ('role', 'is_active')
+            'fields': ('role', 'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')
+        }),
+        ('Tanggal Penting', {
+            'fields': ('last_login', 'created_at', 'updated_at')
         }),
     )
     
@@ -55,7 +62,7 @@ class CustomUserAdmin(BaseUserAdmin):
     
     readonly_fields = ['last_login', 'created_at', 'updated_at']
     date_hierarchy = 'created_at'
-    filter_horizontal = []
+    filter_horizontal = ['groups', 'user_permissions']
     
     def get_readonly_fields(self, request, obj=None):
         readonly = list(self.readonly_fields)
